@@ -1,0 +1,234 @@
+HTML:-
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-md w-96">
+        <h1 class="text-2xl font-semibold text-center mb-4">WEATHER APP</h1>
+        <div class="flex justify-around mb-4">
+            <p class="tab cursor-pointer px-4 py-2 border rounded-md" data-userWeather>Your Weather</p>
+            <p class="tab cursor-pointer px-4 py-2 border rounded-md" data-searchWeather>Search Weather</p>
+        </div>
+        <div class="weather-container">
+            <div class="grant-location-container text-center">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRavj9_Ks_pfBuHO-3VMC8kxky4mR6ntn-iCg&s" alt="location icon" class="w-20 h-20 mx-auto mb-2">
+                <p>Grant Location Access</p>
+                <p class="text-sm text-gray-600 mb-4">Allow Access to Get Weather Information</p>
+                <button class="btn bg-green-500 text-white px-4 py-2 rounded-md" data-grantAccess>Grant Access</button>
+            </div>
+            <form class="form-container flex mb-4" data-searchForm>
+                <input type="text" placeholder="Search for city..." data-searchInput class="flex-grow border rounded-md p-2">
+                <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGXGe42LgiuamxbPge45a2y3Ud-4T1Oz4nbQ&s" alt="search icon" class="w-5 h-5">
+                </button>
+            </form>
+            <div class="loading-container text-center">
+                <img src="https://i.gifer.com/ZKZg.gif" alt="loading gif" class="w-24 h-24 mx-auto mb-2">
+                <p>Loading</p>
+            </div>
+            <div class="user-info-container">
+                <div class="flex items-center justify-center mb-2">
+                    <p data-cityName class="mr-2"></p>
+                    <img data-countryIcon alt="country flag" class="w-8 h-5">
+                </div>
+                <p data-weatherDesc class="text-center"></p>
+                <img data-weatherIcon alt="weather icon" class="mx-auto block my-2">
+                <p data-temp class="text-center"></p>
+                <div class="grid grid-cols-3 gap-2 text-center mt-4">
+                    <div class="parameter">
+                        <img src="https://cdn-icons-png.freepik.com/512/2529/2529971.png" alt="wind icon" class="w-12 h-12 mx-auto mb-1">
+                        <p class="text-sm">Wind Speed</p>
+                        <p data-windSpeed></p>
+                    </div>
+                    <div class="parameter">
+                        <img src="https://m.media-amazon.com/images/S/aplus-media-library-service-media/b8785504-3006-4a35-86f0-bb03781660e7.__CR0,0,220,220_PT0_SX220_V1___.jpg" alt="humidity icon" class="w-12 h-12 mx-auto mb-1">
+                        <p class="text-sm">Humidity</p>
+                        <p data-humidity></p>
+                    </div>
+                    <div class="parameter">
+                        <img src="https://static1.squarespace.com/static/5ac3533bb27e39f181f34a32/t/60a67a9324c06f7ab8f7ea2e/1621523101366/unsplash-image-8iZG31eXkks.jpg?format=1500w" alt="cloud icon" class="w-12 h-12 mx-auto mb-1">
+                        <p class="text-sm">Clouds</p>
+                        <p data-cloudiness></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="weather.js"></script>
+</body>
+</html>
+
+jS:-
+
+let userTab = document.querySelector("[data-userWeather]");
+let searchTab = document.querySelector("[data-searchWeather]");
+
+let userContainer = document.querySelector(".weather-container");
+let grantAccessContainer = document.querySelector(".grant-location-container");
+const searchForm = document.querySelector("[data-searchForm]");
+const loadingScreen = document.querySelector(".loading-container");
+const userInfoContainer = document.querySelector(".user-info-container");
+
+let oldTab = userTab;
+const API_KEY = "d1845658f92b31c64bd94f06f7188c9c";
+
+oldTab.classList.add("current-tab");
+grantAccessContainer.classList.remove("hidden"); // Show location access request
+
+function switchTab(newTab) {
+    if (newTab !== oldTab) {
+        oldTab.classList.remove("current-tab");
+        oldTab = newTab;
+        oldTab.classList.add("current-tab");
+
+        if (newTab === searchTab) {
+            // Switch to search weather
+            userInfoContainer.classList.add("hidden");
+            grantAccessContainer.classList.add("hidden");
+            searchForm.classList.remove("hidden");
+        } else {
+            // Switch to user weather
+            searchForm.classList.add("hidden");
+            if (sessionStorage.getItem("user-coordinates")) {
+                userInfoContainer.classList.remove("hidden");
+                grantAccessContainer.classList.add("hidden");
+                getfromSessionStorage();
+            } else {
+                userInfoContainer.classList.add("hidden");
+                grantAccessContainer.classList.remove("hidden");
+            }
+        }
+    }
+}
+
+userTab.addEventListener("click", () => {
+    switchTab(userTab);
+});
+
+searchTab.addEventListener("click", () => {
+    switchTab(searchTab);
+});
+
+function getfromSessionStorage() {
+    const localCoordinates = sessionStorage.getItem("user-coordinates");
+    if (!localCoordinates) {
+        grantAccessContainer.classList.remove("hidden");
+        userInfoContainer.classList.add("hidden");
+    } else {
+        const coordinates = JSON.parse(localCoordinates);
+        fetchUserWeatherInfo(coordinates);
+    }
+}
+
+async function fetchUserWeatherInfo(coordinates) {
+    const { lat, lon } = coordinates;
+    grantAccessContainer.classList.add("hidden");
+    userInfoContainer.classList.add("hidden");
+    loadingScreen.classList.remove("hidden");
+
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+        );
+        const data = await response.json();
+        loadingScreen.classList.add("hidden");
+        userInfoContainer.classList.remove("hidden");
+        renderWeatherInfo(data);
+    } catch (err) {
+        loadingScreen.classList.add("hidden");
+        console.error("Error fetching user weather:", err);
+    }
+}
+
+function renderWeatherInfo(weatherInfo) {
+    const cityName = document.querySelector("[data-cityName]");
+    const countryIcon = document.querySelector("[data-countryIcon]");
+    const desc = document.querySelector("[data-weatherDesc]");
+    const temp = document.querySelector("[data-temp]");
+    const humidity = document.querySelector("[data-humidity]");
+    const cloudiness = document.querySelector("[data-cloudiness]");
+    const weatherIcon = document.querySelector("[data-weatherIcon]");
+    const windSpeed = document.querySelector("[data-windSpeed]");
+
+    cityName.innerText = weatherInfo?.name;
+    countryIcon.src = `https://flagcdn.com/144x108/${weatherInfo?.sys?.country.toLowerCase()}.png`;
+    desc.innerText = weatherInfo?.weather?.[0]?.description;
+    weatherIcon.src = `http://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`;
+    temp.innerText = `${weatherInfo?.main?.temp} °C`;
+    humidity.innerText = `${weatherInfo?.main?.humidity}%`;
+    cloudiness.innerText = `${weatherInfo?.clouds?.all}%`;
+    windSpeed.innerText = `${weatherInfo?.wind?.speed} m/s`;
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    const userCoordinates = {
+        lat: position.coords.latitude,
+        lon: position.coords.longitude,
+    };
+    sessionStorage.setItem("user-coordinates", JSON.stringify(userCoordinates));
+    fetchUserWeatherInfo(userCoordinates);
+}
+
+const grantAccessButton = document.querySelector("[data-grantAccess]");
+grantAccessButton.addEventListener("click", getLocation);
+
+const searchInput = document.querySelector("[data-searchInput]");
+
+searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let cityName = searchInput.value;
+    if (cityName === "") return;
+    fetchSearchWeatherInfo(cityName);
+    searchInput.value = "";
+});
+
+async function fetchSearchWeatherInfo(city) {
+    loadingScreen.classList.remove("hidden");
+    userInfoContainer.classList.add("hidden");
+    grantAccessContainer.classList.add("hidden");
+
+    try {
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+        );
+        const data = await response.json();
+
+        if (data?.cod === "404") {
+            loadingScreen.classList.add("hidden");
+            alert("City not found!");
+            return;
+        }
+
+        loadingScreen.classList.add("hidden");
+        userInfoContainer.classList.remove("hidden");
+        renderWeatherInfo(data);
+    } catch (e) {
+        loadingScreen.classList.add("hidden");
+        console.error("Error fetching search weather:", e);
+    }
+}
+
+// Auto-check location on page load
+document.addEventListener("DOMContentLoaded", () => {
+    if (sessionStorage.getItem("user-coordinates")) {
+        getfromSessionStorage();
+        userInfoContainer.classList.remove("hidden");
+        grantAccessContainer.classList.add("hidden");
+    } else {
+        grantAccessContainer.classList.remove("hidden");
+    }
+});
