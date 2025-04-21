@@ -1,60 +1,129 @@
 HTML:-
 
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(315deg, #485461 0%, #28313b 74%);
+            overflow: hidden; /* To hide the overflowing circles */
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+
+        .circle-1 {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(to right, #6dd5ed, #2193b0);
+            top: 10%;
+            left: 15%;
+            animation: pulse 5s infinite alternate;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(to right, #faaca8, #dda0dd);
+            bottom: 20%;
+            right: 10%;
+            animation: float 7s infinite alternate;
+        }
+
+        .circle-3 {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(to right, #84fab0, #8fd3f4);
+            top: 60%;
+            left: 40%;
+            animation: spin 6s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-100 flex justify-center items-center h-screen">
-    <div class="bg-white p-6 rounded-lg shadow-md w-96">
-        <h1 class="text-2xl font-semibold text-center mb-4">WEATHER APP</h1>
+<body class="flex justify-center items-center h-screen relative">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+    <div class=" p-6 rounded-lg shadow-[0_40px_50px_rgba(0,0,0,0.5)] w-96 bg-white bg-opacity-20 backdrop-blur-md z-10">
+        <h1 class="text-2xl font-semibold text-center mb-4 text-white">WEATHER APP</h1>
         <div class="flex justify-around mb-4">
-            <p class="tab cursor-pointer px-4 py-2 border rounded-md" data-userWeather>Your Weather</p>
-            <p class="tab cursor-pointer px-4 py-2 border rounded-md" data-searchWeather>Search Weather</p>
+            <p class="tab cursor-pointer px-4 py-2 border rounded-md text-white border-gray-400 hover:bg-gray-700 hover:border-gray-700" data-userWeather>Your Weather</p>
+            <p class="tab cursor-pointer px-4 py-2 border rounded-md text-white border-gray-400 hover:bg-gray-700 hover:border-gray-700" data-searchWeather>Search Weather</p>
         </div>
         <div class="weather-container">
-            <div class="grant-location-container text-center">
+            <div class="grant-location-container text-center text-white">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRavj9_Ks_pfBuHO-3VMC8kxky4mR6ntn-iCg&s" alt="location icon" class="w-20 h-20 mx-auto mb-2">
                 <p>Grant Location Access</p>
-                <p class="text-sm text-gray-600 mb-4">Allow Access to Get Weather Information</p>
-                <button class="btn bg-green-500 text-white px-4 py-2 rounded-md" data-grantAccess>Grant Access</button>
+                <p class="text-sm text-gray-300 mb-4">Allow Access to Get Weather Information</p>
+                <button class="btn bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" data-grantAccess>Grant Access</button>
             </div>
             <form class="form-container flex mb-4" data-searchForm>
-                <input type="text" placeholder="Search for city..." data-searchInput class="flex-grow border rounded-md p-2">
-                <button type="submit" class="bg-blue-500 text-white p-2 rounded-md">
+                <input type="text" placeholder="Search for city..." data-searchInput class="flex-grow border rounded-md p-2 text-gray-800 bg-white bg-opacity-70 backdrop-blur-sm">
+                <button type="submit" class="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGXGe42LgiuamxbPge45a2y3Ud-4T1Oz4nbQ&s" alt="search icon" class="w-5 h-5">
                 </button>
             </form>
-            <div class="loading-container text-center">
+            <div class="loading-container text-center text-white">
                 <img src="https://i.gifer.com/ZKZg.gif" alt="loading gif" class="w-24 h-24 mx-auto mb-2">
                 <p>Loading</p>
             </div>
-            <div class="user-info-container">
+            <div class="user-info-container text-white">
                 <div class="flex items-center justify-center mb-2">
                     <p data-cityName class="mr-2"></p>
                     <img data-countryIcon alt="country flag" class="w-8 h-5">
                 </div>
-                <p data-weatherDesc class="text-center"></p>
-                <img data-weatherIcon alt="weather icon" class="mx-auto block my-2">
-                <p data-temp class="text-center"></p>
-                <div class="grid grid-cols-3 gap-2 text-center mt-4">
+                <p data-weatherDesc class="text-center capitalize"></p>
+                <img data-weatherIcon alt="weather icon" class="mx-auto block my-2 w-24 h-24 object-contain">
+                <p data-temp class="text-center text-4xl font-semibold"></p>
+                <div class="grid grid-cols-3 gap-2 text-center mt-4 text-gray-300">
                     <div class="parameter">
-                        <img src="https://cdn-icons-png.freepik.com/512/2529/2529971.png" alt="wind icon" class="w-12 h-12 mx-auto mb-1">
-                        <p class="text-sm">Wind Speed</p>
-                        <p data-windSpeed></p>
+                        <img src="https://cdn-icons-png.freepik.com/512/2529/2529971.png" alt="wind icon" class="w-10 h-10 mx-auto mb-1">
+                        <p class="text-xs uppercase">Wind</p>
+                        <p data-windSpeed class="font-semibold text-sm text-white"><span data-windSpeedVal></span> km/h</p>
                     </div>
                     <div class="parameter">
-                        <img src="https://m.media-amazon.com/images/S/aplus-media-library-service-media/b8785504-3006-4a35-86f0-bb03781660e7.__CR0,0,220,220_PT0_SX220_V1___.jpg" alt="humidity icon" class="w-12 h-12 mx-auto mb-1">
-                        <p class="text-sm">Humidity</p>
-                        <p data-humidity></p>
+                        <img src="https://cdn-icons-png.flaticon.com/512/4148/4148460.png" alt="humidity icon" class="w-10 h-10 mx-auto mb-1">
+                        <p class="text-xs uppercase">Humidity</p>
+                        <p data-humidity class="font-semibold text-sm text-white"><span data-humidityVal></span>%</p>
                     </div>
                     <div class="parameter">
-                        <img src="https://static1.squarespace.com/static/5ac3533bb27e39f181f34a32/t/60a67a9324c06f7ab8f7ea2e/1621523101366/unsplash-image-8iZG31eXkks.jpg?format=1500w" alt="cloud icon" class="w-12 h-12 mx-auto mb-1">
-                        <p class="text-sm">Clouds</p>
-                        <p data-cloudiness></p>
+                        <img src="https://static1.squarespace.com/static/5ac3533bb27e39f181f34a32/t/60a67a9324c06f7ab8f7ea2e/1621523101366/unsplash-image-8iZG31eXkks.jpg?format=1500w" alt="cloud icon" class="w-10 h-10 mx-auto mb-1">
+                        <p class="text-xs uppercase">Clouds</p>
+                        <p data-cloudiness class="font-semibold text-sm text-white"><span data-cloudinessVal></span>%</p>
                     </div>
                 </div>
             </div>
@@ -63,6 +132,7 @@ HTML:-
     <script src="weather.js"></script>
 </body>
 </html>
+
 
 jS:-
 
