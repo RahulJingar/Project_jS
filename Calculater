@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Calculater</title>
+  </head>
+  <body>
+    <div class="border w-1/6 mx-auto mt-5 rounded">
+      <input
+        class="border rounded m-5 w-52 none"
+        id="display"
+        readonly
+        type="text"
+      />
+      <div class="text-center">
+        <div>
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay=''
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          C
+          </button>
+
+
+          <button 
+          class="border py-2 px-4 rounded-sm" 
+          onclick="currentDisplay=currentDisplay+'1'
+          document.getElementById('display').value = currentDisplay"
+          >
+          1
+          </button>
+
+
+          <button class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay=currentDisplay+2
+          document.getElementById('display').value = currentDisplay
+          "
+          >2</button>
+        </div>
+
+
+        <div>
+          <button 
+          class="border mt-2 py-2 px-4 rounded-sm"
+         onclick="currentDisplay+='+'
+         document.getElementById('display').value = currentDisplay;
+         "
+
+          >
+          +
+          </button>
+
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+=3
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          3
+          </button>
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+=4
+          document.getElementById('display').value = currentDisplay
+          "
+          >
+          4
+          </button>
+        </div>
+
+        <div>
+          <button 
+          class="border mt-2 py-2 px-4 rounded-sm"
+         onclick="currentDisplay=currentDisplay+'-'
+         document.getElementById('display').value = currentDisplay;
+         "
+          >
+          -
+          </button>
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='5'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          5
+          </button>
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='6'
+          document.getElementById('display').value = currentDisplay
+          "
+          >
+          6
+          </button>
+        </div>
+
+        <div>
+          <button 
+          class="border mt-2 py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='*'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          x
+          </button>
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='7'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          7
+          </button>
+
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='8'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          8
+          </button>
+        </div>
+
+        <div>
+          <button 
+          class="border mt-2 py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='/'
+          document.getElementById('display').value = currentDisplay
+          "
+          >
+          /
+          </button>
+
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="
+          let result = eval(currentDisplay)
+          currentDisplay = result
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          =
+          </button>
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='9'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          9
+          </button>
+        </div>
+
+
+        <div>
+          <button 
+          class="border mt-2 py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='0'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          0
+          </button>
+          <button 
+          class="border py-2 px-4 rounded-sm"
+          onclick="currentDisplay+='.'
+          document.getElementById('display').value = currentDisplay;
+          "
+          >
+          .
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    let currentDisplay = '';
+    document.getElementById('display').value = currentDisplay;
+  </script>
+</html>
