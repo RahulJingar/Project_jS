@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Cricket Game</title>
+</head>
+<body>
+  <div class="flex justify-center mt-80 items-center flex-col">
+      <h1 class="text-4xl font-bold">Bat Ball Stump Game</h1>
+ 
+  </div>
+  <div class="text-center mt-5">
+     <button class="border px-3 " id="bat"
+     onclick="
+     
+    //  console.log(`You have choosen Bat`)
+     let randumNumber = Math.random()*3;
+
+     let computerChoice;
+
+     if(randumNumber>0 && randumNumber<=1){
+      computerChoice = 'Bat';
+      // console.log(`Computer choice is bat`)
+     }
+     else if(randumNumber>1 && randumNumber<=2){
+      computerChoice = 'Ball'
+      // console.log(`Computer choice ball`)
+     }else{
+      computerChoice = 'Stump'
+      // console.log(`Computer choice Stump`)
+     }
+
+     let computerChoiceMsg;
+
+     let resultMsg;
+     if(computerChoice==='Ball'){
+      resultMsg = `User Won`
+     }
+     else if(computerChoice === 'Bat'){
+      resultMsg = `It is Tie!!`
+     }
+     else if(computerChoice === 'Stump'){
+      resultMsg = `Computer has won`
+     }
+
+     alert(`You Have choosen Bat Computer choice is: ${computerChoice} ${resultMsg}`)
+     "
+     >Bat</button>
+  <button class="border px-3" id="ball"
+  
+  onclick="
+  let randumNumbers = Math.random()*3
+  let computerChoices;
+  if(randumNumbers>0 && randumNumbers<=1){
+    computerChoices = 'Ball'
+  }
+  else if(randumNumbers>1 && randumNumbers<=2){
+    computerChoices = 'Bat'
+  }else if(randumNumbers>2 && randumNumbers<=3){
+    computerChoices = 'Stump'
+  }
+
+  let resultMsgs;
+
+  if(computerChoices === 'Bat'){
+    resultMsgs = `Computer has won`
+  }
+  else if(computerChoices === 'Ball'){
+    resultMsgs = `It is Tie!!`
+  }
+  else if(computerChoices === 'Stump'){
+    resultMsgs = `User Won!!`
+  }
+
+  alert(`You have Choosen Ball Computer Choice is: ${computerChoices} ${resultMsgs}`)
+  "
+  
+  >Ball</button>
+  <button class="border px-3" id="stump"
+  onclick="
+  let randoms = Math.random()*3;
+  let computerChoise;
+  if(randoms>0 && randoms<=1){
+    computerChoise = 'Bat'
+  }
+  else if(randoms>1 && randoms<=2){
+    computerChoise = 'Ball'
+  }
+  else if(randoms>2 && randoms<=3){
+    computerChoise = 'Stump'
+  }
+
+  let resultDeclare;
+  if(computerChoise === 'Bat'){
+    resultDeclare = 'Computer has won'
+  }
+  else if(computerChoise === 'Ball'){
+    resultDeclare = 'User Won'
+  }
+  else if(computerChoise === 'Stump'){
+    resultDeclare = 'It is Tie!!'
+  }
+
+  alert(`You have choosen Wicket Computer Choice is: ${computerChoise} ${resultDeclare}`)
+  "
+  >Stump</button>
+  </div>
+</body>
+</html>
