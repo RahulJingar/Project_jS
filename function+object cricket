@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Cricket Game</title>
+</head>
+<body>
+  <div class="flex justify-center mt-80 items-center flex-col">
+    <h1 class="text-4xl font-bold">Bat Ball Stump Game</h1>
+  </div>
+
+  <div class="text-center mt-5">
+    <button class="border px-3" id="bat"
+      onclick="
+        generateComputerChoice();
+        let resultMsg;
+        if(computerChoice === 'Ball'){
+          resultMsg = 'User Won';
+          scoreObj.won++;
+        } else if(computerChoice === 'Bat'){
+          resultMsg = 'It is Tie!!';
+          scoreObj.tie++;
+        } else if(computerChoice === 'Stump'){
+          resultMsg = 'Computer has won';
+          scoreObj.lost++;
+        }
+        showResult('Bat', resultMsg);
+      "
+    >Bat</button>
+
+    <button class="border px-3" id="ball"
+      onclick="
+        generateComputerChoice();
+        let resultMsgs;
+        if(computerChoice === 'Bat'){
+          resultMsgs = 'Computer has won';
+          scoreObj.lost++;
+        } else if(computerChoice === 'Ball'){
+          resultMsgs = 'It is Tie!!';
+          scoreObj.tie++;
+        } else if(computerChoice === 'Stump'){
+          resultMsgs = 'User Won!!';
+          scoreObj.won++;
+        }
+        showResult('Ball', resultMsgs);
+      "
+    >Ball</button>
+
+    <button class="border px-3" id="stump"
+      onclick="
+        generateComputerChoice();
+        let resultDeclare;
+        if(computerChoice === 'Bat'){
+          resultDeclare = 'Computer has won';
+          scoreObj.lost++;
+        } else if(computerChoice === 'Ball'){
+          resultDeclare = 'User Won';
+          scoreObj.won++;
+        } else if(computerChoice === 'Stump'){
+          resultDeclare = 'It is Tie!!';
+          scoreObj.tie++;
+        }
+        showResult('Stump', resultDeclare);
+      "
+    >Stump</button>
+  </div>
+</body>
+
+<script>
+  let computerChoice;
+
+  let scoreObj = {
+    won: 0,
+    lost: 0,
+    tie: 0
+  };
+
+  function generateComputerChoice(){
+    let randumNumber = Math.random() * 3;
+    if(randumNumber > 0 && randumNumber <= 1){
+      computerChoice = 'Bat';
+    } else if(randumNumber > 1 && randumNumber <= 2){
+      computerChoice = 'Ball';
+    } else {
+      computerChoice = 'Stump';
+    }
+  }
+
+  function showResult(userChoice, resultText) {
+    alert(`You have choosen ${userChoice}
+Computer choice is: ${computerChoice}
+${resultText}
+Won: ${scoreObj.won}, Lost: ${scoreObj.lost}, Tie: ${scoreObj.tie}`);
+  }
+</script>
+</html>
