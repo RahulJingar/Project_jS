@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Todo App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .animated-bg {
+      background: linear-gradient(-45deg, #4f46e5, #9333ea, #14b8a6, #f59e0b);
+      background-size: 400% 400%;
+      animation: gradientAnimation 12s ease infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="animated-bg min-h-screen flex flex-col items-center p-6 text-white">
+
+  <h1 class="text-5xl font-extrabold mb-10 drop-shadow-lg animate-bounce">🌟 Todo App</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl mb-10">
+    <input 
+      id="todo-input" 
+      type="text" 
+      placeholder="Enter Todo here"
+      class="col-span-1 px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-lg"
+    />
+    <input 
+      id="todo-date" 
+      type="date"
+      class="col-span-1 px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-lg"
+    />
+    <button 
+      onclick="addTodo();"
+      class="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold px-4 py-2 rounded-lg shadow-lg transition duration-300"
+    >
+      Add
+    </button>
+  </div>
+
+  <div class="todo-container grid grid-cols-1 gap-4 w-full max-w-2xl"></div>
+
+  <script>
+    let todoList = JSON.parse(localStorage.getItem("todos")) || [];
+
+    function saveToLocal() {
+      localStorage.setItem("todos", JSON.stringify(todoList));
+    }
+
+    function addTodo() {
+      const inputElement = document.getElementById("todo-input");
+      const dateElement = document.getElementById("todo-date");
+      const task = inputElement.value.trim();
+      const date = dateElement.value;
+
+      if (!task || !date) {
+        alert("Please enter both task and date.");
+        return;
+      }
+
+      todoList.push({ item: task, dueDate: date });
+      saveToLocal();
+
+      inputElement.value = '';
+      dateElement.value = '';
+      displayItems();
+    }
+
+    function deleteTodo(index) {
+      todoList.splice(index, 1);
+      saveToLocal();
+      displayItems();
+    }
+
+    function displayItems() {
+      const container = document.querySelector(".todo-container");
+      container.innerHTML = "";
+
+      todoList.forEach((todo, index) => {
+        const box = document.createElement("div");
+        box.className = "bg-white text-black p-4 rounded-lg shadow-md flex justify-between items-center animate-fade-in";
+
+        box.innerHTML = `
+          <div>
+            <p class="text-lg font-semibold">${todo.item}</p>
+            <p class="text-sm text-gray-600">${todo.dueDate}</p>
+          </div>
+          <button onclick="deleteTodo(${index})" class="text-red-600 hover:text-red-800 font-bold transition">
+            ✖
+          </button>
+        `;
+
+        container.appendChild(box);
+      });
+    }
+
+    // Load todos on page load
+    displayItems();
+  </script>
+</body>
+</html>
